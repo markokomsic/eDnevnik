@@ -1,7 +1,7 @@
-package ba.sum.fsre.ednevnik.controllers;
+package com.filmskiKatalog.controllers;
 
-import ba.sum.fsre.ednevnik.models.User;
-import ba.sum.fsre.ednevnik.repositories.UserRepository;
+import com.filmskiKatalog.models.User;
+import com.filmskiKatalog.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

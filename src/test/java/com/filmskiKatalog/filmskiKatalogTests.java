@@ -1,10 +1,10 @@
-package ba.sum.fsre.ednevnik;
+package com.filmskiKatalog;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EDnevnikApplicationTests {
+class filmskiKatalogTests {
 
     @Test
     void contextLoads() {

@@ -1,6 +1,6 @@
-package ba.sum.fsre.ednevnik.config;
+package com.filmskiKatalog.config;
 
-import ba.sum.fsre.ednevnik.services.UserDetailsService;
+import com.filmskiKatalog.services.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,8 +49,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/register/**","/auth/register")
                 .permitAll()
                 .requestMatchers("/users/**").hasAuthority("ADMIN")
-                .requestMatchers("/teacher/**").hasAuthority("TEACHER")
-                .requestMatchers("/student/**").hasAnyAuthority("STUDENT")
+                .requestMatchers("/korisnik/**").hasAnyAuthority("KORISNIK")
                 .anyRequest()
                 .authenticated()
                 .and()

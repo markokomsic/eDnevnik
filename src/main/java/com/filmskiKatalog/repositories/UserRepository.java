@@ -1,6 +1,6 @@
-package ba.sum.fsre.ednevnik.repositories;
+package com.filmskiKatalog.repositories;
 
-import ba.sum.fsre.ednevnik.models.User;
+import com.filmskiKatalog.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

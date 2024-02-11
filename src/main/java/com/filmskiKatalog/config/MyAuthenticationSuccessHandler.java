@@ -1,4 +1,4 @@
-package ba.sum.fsre.ednevnik.config;
+package com.filmskiKatalog.config;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,10 +16,8 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
         // Logika preusmjeravanja na osnovu uloge
         if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
             response.sendRedirect("/users");
-        } else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("TEACHER"))) {
-            response.sendRedirect("/teacher");
-        } else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("STUDENT"))) {
-            response.sendRedirect("/student");
+        }  else if (authorities.stream().anyMatch(a -> a.getAuthority().equals("KORISNIK"))) {
+            response.sendRedirect("/korisnik");
         } else {
             response.sendRedirect("/login");
         }

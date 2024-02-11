@@ -1,4 +1,4 @@
-package ba.sum.fsre.ednevnik.models;
+package com.filmskiKatalog.models;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

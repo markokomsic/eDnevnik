@@ -1,4 +1,4 @@
-package ba.sum.fsre.ednevnik.models;
+package com.filmskiKatalog.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -45,7 +45,7 @@ public class User {
         this.email = email;
         this.lozinka = lozinka;
         this.potvrdaLozinke = potvrdaLozinke;
-        roles.add(Role.STUDENT);
+        roles.add(Role.KORISNIK);
     }
 
 

@@ -1,13 +1,13 @@
-package ba.sum.fsre.ednevnik;
+package com.filmskiKatalog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EDnevnikApplication {
+public class filmskiKatalog {
 
     public static void main(String[] args) {
-        SpringApplication.run(EDnevnikApplication.class, args);
+        SpringApplication.run(filmskiKatalog.class, args);
     }
 
 }
