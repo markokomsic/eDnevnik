@@ -1,15 +1,18 @@
 package com.filmskiKatalog.controllers;
 
+import com.filmskiKatalog.models.Role;
 import com.filmskiKatalog.models.User;
 import com.filmskiKatalog.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.Collections;
 
 @Controller
 public class AuthController {
@@ -35,6 +38,7 @@ public class AuthController {
             String passwordEncoded = encoder.encode(user.getLozinka());
             user.setLozinka(passwordEncoded);
             user.setPotvrdaLozinke(passwordEncoded);
+            user.setRoles(Collections.singleton(Role.KORISNIK)); // Pretpostavlja se da Role.KORISNIK postoji
             userRepo.save(user);
             return "redirect:/auth/login";
         }
