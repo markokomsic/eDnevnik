@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Uredi Glumca</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Uredi Glumca</h1>
+    <form th:action="@{/glumci/edit-glumac/{id}(id=${glumac.id})}" th:object="${glumac}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="form-group">
+            <label for="ime">Ime Glumca</label>
+            <input type="text" id="ime" name="ime" class="form-control" th:field="*{ime}" required>
+        </div>
+        <!-- Dodati dodatne polja za unos po potrebi -->
+        <button type="submit" class="btn btn-primary">Ažuriraj Glumca</button>
+    </form>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

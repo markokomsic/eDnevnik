@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj Redatelja</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Dodaj Novog Redatelja</h1>
+    <form th:action="@{/redatelji/add-redatelj}" th:object="${redatelj}" method="post">
+        <div class="form-group">
+            <label for="ime">Ime</label>
+            <input type="text" id="ime" name="ime" class="form-control" th:field="*{ime}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Spremi Redatelja</button>
+    </form>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

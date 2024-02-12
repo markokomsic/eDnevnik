@@ -25,6 +25,7 @@ public class FilmController {
 
     // Prikazuje listu svih filmova
     @GetMapping("/film-list")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String listAllFilms(Model model) {
         List<Film> filmovi = filmService.findAllFilms();
         model.addAttribute("filmovi", filmovi);

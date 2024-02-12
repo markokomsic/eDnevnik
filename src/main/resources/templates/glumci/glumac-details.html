@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalji Glumca</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Detalji Glumca</h1>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" th:text="${glumac.ime}">Ime Glumca</h2>
+            <!-- Dodajte dodatne informacije o glumcu -->
+            <h4>Filmovi:</h4>
+            <ul>
+                <li th:each="film : ${glumac.filmovi}" th:text="${film.naziv}"></li>
+            </ul>
+            <a th:href="@{/glumci}" class="card-link">Povratak na listu glumaca</a>
+        </div>
+    </div>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -8,8 +8,9 @@
 <body>
 <div class="container mt-4">
     <h1>Uredi Film</h1>
-    <form th:action="@{/filmovi/edit-film}" th:object="${film}" method="post">
-        <input type="hidden" th:field="*{id}">
+    <form th:action="@{/filmovi/edit-film/{id}(id=${film.id})}" th:object="${film}" method="post">
+
+    <input type="hidden" th:field="*{id}">
         <div class="form-group">
             <label for="naziv">Naziv Filma</label>
             <input type="text" id="naziv" name="naziv" class="form-control" th:field="*{naziv}" required>

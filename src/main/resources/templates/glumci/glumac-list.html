@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Glumaca</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Lista Glumaca</h1>
+    <div>
+        <a th:href="@{/glumci/add-glumac}" class="btn btn-success mb-2">Dodaj Novog Glumca</a>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Ime</th>
+            <th>Detalji</th>
+            <th>Akcije</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="glumac : ${glumci}">
+            <td th:text="${glumac.ime}">Ime Glumca</td>
+            <td>
+                <a th:href="@{/glumci/glumac-details/{id}(id=${glumac.id})}" class="btn btn-info">Detalji</a>
+            </td>
+            <td>
+                <a th:href="@{/glumci/edit-glumac/{id}(id=${glumac.id})}" class="btn btn-primary">Uredi</a>
+                <a th:href="@{/glumci/delete-glumac/{id}(id=${glumac.id})}" class="btn btn-danger">Obriši</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

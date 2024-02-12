@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Redatelja</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Lista Redatelja</h1>
+    <a th:href="@{/redatelji/add-redatelj}" class="btn btn-primary">Dodaj Novog Redatelja</a>
+    <table class="table mt-3">
+        <thead>
+        <tr>
+            <th>Ime</th>
+            <th>Prezime</th>
+            <th>Akcije</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="redatelj : ${redatelji}">
+            <td th:text="${redatelj.ime}"></td>
+            <td>
+                <a th:href="@{/redatelji/redatelj-details/{id}(id=${redatelj.id})}" class="btn btn-info">Detalji</a>
+            </td>
+            <td>
+                <a th:href="@{/redatelji/edit-redatelj/{id}(id=${redatelj.id})}" class="btn btn-primary">Uredi</a>
+                <a th:href="@{/redatelji/delete-redatelj/{id}(id=${redatelj.id})}" class="btn btn-danger">Obriši</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
