@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalji Filma</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Detalji Filma</h1>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title" th:text="${film.naziv}">Naziv Filma</h2>
+            <h5 class="card-subtitle mb-2 text-muted" th:text="'Godina izdavanja: ' + ${film.godinaIzdavanja}">Godina Izdavanja</h5>
+            <p class="card-text" th:text="${film.opis}">Opis Filma</p>
+            <h4>Žanrovi:</h4>
+            <ul>
+                <li th:each="zanr : ${film.zanrovi}" th:text="${zanr.naziv}">Žanr</li>
+            </ul>
+            <!-- Dodatne informacije o filmu -->
+            <a th:href="@{/filmovi/film-list}" class="card-link">Povratak na listu filmova</a>
+        </div>
+    </div>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

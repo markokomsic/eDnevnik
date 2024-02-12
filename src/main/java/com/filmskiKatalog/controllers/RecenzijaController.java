@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/recenzije")
+@RequestMapping("/recenzije")
 public class RecenzijaController {
 
     @Autowired

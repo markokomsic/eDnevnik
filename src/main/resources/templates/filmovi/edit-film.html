@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Uredi Film</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Uredi Film</h1>
+    <form th:action="@{/filmovi/edit-film}" th:object="${film}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="form-group">
+            <label for="naziv">Naziv Filma</label>
+            <input type="text" id="naziv" name="naziv" class="form-control" th:field="*{naziv}" required>
+        </div>
+        <div class="form-group">
+            <label for="godinaIzdavanja">Godina Izdavanja</label>
+            <input type="number" id="godinaIzdavanja" name="godinaIzdavanja" class="form-control" th:field="*{godinaIzdavanja}" required>
+        </div>
+        <div class="form-group">
+            <label for="opis">Opis Filma</label>
+            <textarea id="opis" name="opis" class="form-control" th:field="*{opis}" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="zanrovi">Žanr</label>
+            <select id="zanrovi" name="zanrovi" class="form-control" th:field="*{zanrovi}" multiple>
+                <option value="">Odaberite žanr</option>
+                <!-- Dinamičko dodavanje žanrova -->
+                <option th:each="zanr : ${zanrovi}" th:value="${zanr.id}" th:text="${zanr.naziv}"></option>
+            </select>
+        </div>
+        <!-- Dodati dodatne polja za unos po potrebi -->
+        <button type="submit" class="btn btn-primary">Ažuriraj Film</button>
+    </form>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

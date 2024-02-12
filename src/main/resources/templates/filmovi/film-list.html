@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Filmovi</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Lista Filmova</h1>
+    <div class="mb-2">
+        <a href="/filmovi/add-film" class="btn btn-success">Dodaj Novi Film</a>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Naziv</th>
+            <th>Godina Izdavanja</th>
+            <th>Žanr</th>
+            <th>Akcije</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="film : ${filmovi}">
+            <td th:text="${film.naziv}"></td>
+            <td th:text="${film.godinaIzdavanja}"></td>
+            <td><span th:each="zanr : ${film.zanrovi}" th:text="${zanr.naziv} + ' '"></span></td>
+            <td>
+                <a th:href="@{/filmovi/edit-film/{id}(id=${film.id})}" class="btn btn-primary">Uredi</a>
+                <a th:href="@{/filmovi/film-details/{id}(id=${film.id})}" class="btn btn-info">Detalji</a>
+                <a th:href="@{/filmovi/delete-film/{id}(id=${film.id})}" class="btn btn-danger">Obriši</a>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

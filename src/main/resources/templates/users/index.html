@@ -8,8 +8,9 @@
 <div class="container mt-5">
     <h2>Lista Korisnika</h2>
     <a href="/users/add" class="btn btn-success">Dodaj Novog Korisnika</a>
+    <a href="/filmovi/film-list" class="btn btn-info">Upravljaj Filmovima</a> <!-- Dodano -->
 
-    <form th:action="@{/logout}" method="post">
+    <form th:action="@{/logout}" method="post" class="d-inline">
         <button type="submit" class="btn btn-danger">Odjavi se</button>
     </form>
 
@@ -19,7 +20,6 @@
             <th>Ime</th>
             <th>Prezime</th>
             <th>Email</th>
-            <!-- Dodajte dodatne stupce ako je potrebno -->
             <th>Uloge</th>
             <th>Akcije</th>
         </tr>
@@ -29,7 +29,6 @@
             <td th:text="${user.ime}">Ime</td>
             <td th:text="${user.prezime}">Prezime</td>
             <td th:text="${user.email}">Email</td>
-            <!-- Dodajte dodatne ćelije ako je potrebno -->
             <td>
                 <span th:each="role : ${user.roles}" class="badge badge-primary mr-1" th:text="${role}"></span>
             </td>
@@ -45,5 +44,6 @@
         </tbody>
     </table>
 </div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
