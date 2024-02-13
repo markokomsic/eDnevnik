@@ -17,6 +17,23 @@
             <ul>
                 <li th:each="zanr : ${film.zanrovi}" th:text="${zanr.naziv}">Žanr</li>
             </ul>
+            <h4>Glumci:</h4>
+            <ul>
+                <li th:each="glumac : ${film.glumci}" th:text="${glumac.ime}">Glumac</li>
+            </ul>
+            <h4>Redatelji:</h4>
+            <ul>
+                <li th:each="redatelj : ${film.redatelji}" th:text="${redatelj.ime}">Redatelj</li>
+            </ul>
+            <div class="mt-3">
+                <img th:src="${film.slikaUrl}" alt="Slika Filma" class="img-fluid" th:if="${film.slikaUrl}">
+            </div>
+            <div class="mt-3">
+                <h5>Trajanje: <span th:text="${film.trajanje} + ' minuta'">Trajanje filma</span></h5>
+            </div>
+            <div class="mt-3">
+                <a th:href="${film.trailerUrl}" target="_blank" th:if="${film.trailerUrl}">Pogledaj Trailer</a>
+            </div>
             <!-- Dodatne informacije o filmu -->
             <a th:href="@{/filmovi/film-list}" class="card-link">Povratak na listu filmova</a>
         </div>

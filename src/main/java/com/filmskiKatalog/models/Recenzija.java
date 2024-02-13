@@ -1,6 +1,7 @@
 package com.filmskiKatalog.models;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class Recenzija {
@@ -8,7 +9,7 @@ public class Recenzija {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 1000) // Pretpostavka za duljinu teksta recenzije
+    @Column(length = 10000) // Pretpostavka za duljinu teksta recenzije
     private String tekst;
 
     private int ocjena; // Pretpostavka da je ocjena numerička vrijednost
@@ -21,16 +22,22 @@ public class Recenzija {
     @JoinColumn(name = "korisnik_id")
     private User korisnik; // Pretpostavka da postoji entitet User
 
-    // Defaultni konstruktor
+    private LocalDate datumObjave;
+
+    private int brojLikeova;
+    private int brojDislikeova;
+
     public Recenzija() {
     }
 
-    // Parametrizirani konstruktor
-    public Recenzija(String tekst, int ocjena, Film film, User korisnik) {
+    public Recenzija(String tekst, int ocjena, Film film, User korisnik, LocalDate datumObjave) {
         this.tekst = tekst;
         this.ocjena = ocjena;
         this.film = film;
         this.korisnik = korisnik;
+        this.datumObjave = datumObjave;
+        this.brojLikeova = 0; // Inicijalno postavljamo na 0
+        this.brojDislikeova = 0; // Inicijalno postavljamo na 0
     }
 
     // Getteri i setteri
@@ -72,5 +79,38 @@ public class Recenzija {
 
     public void setKorisnik(User korisnik) {
         this.korisnik = korisnik;
+    }
+
+    public LocalDate getDatumObjave() {
+        return datumObjave;
+    }
+
+    public void setDatumObjave(LocalDate datumObjave) {
+        this.datumObjave = datumObjave;
+    }
+
+    public int getBrojLikeova() {
+        return brojLikeova;
+    }
+
+    public void setBrojLikeova(int brojLikeova) {
+        this.brojLikeova = brojLikeova;
+    }
+
+    public int getBrojDislikeova() {
+        return brojDislikeova;
+    }
+
+    public void setBrojDislikeova(int brojDislikeova) {
+        this.brojDislikeova = brojDislikeova;
+    }
+
+    // Metode za upravljanje likeovima i dislikeovima
+    public void dodajLike() {
+        this.brojLikeova++;
+    }
+
+    public void dodajDislike() {
+        this.brojDislikeova++;
     }
 }

@@ -4,17 +4,30 @@
     <meta charset="UTF-8">
     <title>Detalji Redatelja</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Stil za ograničavanje veličine slike */
+        .director-image {
+            max-width: 200px; /* Postavite maksimalnu širinu slike */
+            max-height: 300px; /* Postavite maksimalnu visinu slike */
+            width: auto; /* Automatski prilagodi širinu */
+            height: auto; /* Automatski prilagodi visinu */
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-4">
     <h1>Detalji Redatelja</h1>
     <div class="card">
         <div class="card-body">
-            <h2 class="card-title" th:text="${redatelj.ime}">Ime i Prezime Redatelja</h2>
-            <!-- Ovdje dodajte dodatne informacije o redatelju ako su dostupne -->
-            <p class="card-text"><strong>Filmovi:</strong></p>
+            <h2 class="card-title" th:text="${redatelj.ime}">Ime Redatelja</h2>
+            <p><strong>Biografija:</strong> <span th:text="${redatelj.biografija}"></span></p>
+            <p><strong>Slika Redatelja:</strong></p>
+            <img th:src="${redatelj.slikaUrl}" alt="Slika Redatelja" class="img-fluid director-image" th:if="${redatelj.slikaUrl}">
+            <p><strong>Datum Rođenja:</strong> <span th:text="${#temporals.format(redatelj.datumRodjenja, 'dd.MM.yyyy')}"></span></p>
+            <p><strong>Mjesto Rođenja:</strong> <span th:text="${redatelj.mjestoRodjenja}"></span></p>
+            <h4>Filmovi:</h4>
             <ul>
-                <li th:each="film : ${redatelj.filmovi}" th:text="${film.naziv}">Naziv Filma</li>
+                <li th:each="film : ${redatelj.filmovi}" th:text="${film.naziv}"></li>
             </ul>
             <a th:href="@{/redatelji/redatelj-list}" class="card-link">Povratak na listu redatelja</a>
         </div>

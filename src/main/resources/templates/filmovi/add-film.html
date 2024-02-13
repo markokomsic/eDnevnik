@@ -9,6 +9,7 @@
 <div class="container mt-4">
     <h1>Dodaj Novi Film</h1>
     <form th:action="@{/filmovi/add-film}" th:object="${film}" method="post">
+        <!-- Postojeća polja -->
         <div class="form-group">
             <label for="naziv">Naziv Filma</label>
             <input type="text" id="naziv" name="naziv" class="form-control" th:field="*{naziv}" placeholder="Unesite naziv filma" required>
@@ -23,13 +24,36 @@
         </div>
         <div class="form-group">
             <label for="zanrovi">Žanr</label>
-            <select id="zanrovi" name="zanrovi" class="form-control" th:field="*{zanrovi}" multiple>
+            <select id="zanrovi" name="selectedZanrovi" class="form-control" multiple>
                 <option value="">Odaberite žanr</option>
-                <!-- Dinamičko dodavanje žanrova -->
                 <option th:each="zanr : ${zanrovi}" th:value="${zanr.id}" th:text="${zanr.naziv}"></option>
             </select>
         </div>
-        <!-- Dodati dodatne polja za unos po potrebi -->
+        <!-- Novo dodana polja -->
+        <div class="form-group">
+            <label for="selectedGlumci">Glumci</label>
+            <select id="selectedGlumci" name="selectedGlumci" class="form-control" multiple>
+                <option th:each="glumac : ${glumci}" th:value="${glumac.id}" th:text="${glumac.ime}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="selectedRedatelji">Redatelji</label>
+            <select id="selectedRedatelji" name="selectedRedatelji" class="form-control" multiple>
+                <option th:each="redatelj : ${redatelji}" th:value="${redatelj.id}" th:text="${redatelj.ime}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="slikaUrl">Slika Filma (URL)</label>
+            <input type="text" id="slikaUrl" name="slikaUrl" class="form-control" th:field="*{slikaUrl}" placeholder="Unesite URL slike filma">
+        </div>
+        <div class="form-group">
+            <label for="trajanje">Trajanje Filma (minute)</label>
+            <input type="number" id="trajanje" name="trajanje" class="form-control" th:field="*{trajanje}" placeholder="Unesite trajanje filma">
+        </div>
+        <div class="form-group">
+            <label for="trailerUrl">Link do Trailera (URL)</label>
+            <input type="text" id="trailerUrl" name="trailerUrl" class="form-control" th:field="*{trailerUrl}" placeholder="Unesite URL trailera filma">
+        </div>
         <button type="submit" class="btn btn-success">Spremi Film</button>
     </form>
 </div>

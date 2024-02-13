@@ -13,6 +13,9 @@ public class Film {
     private String naziv;
     private String opis;
     private int godinaIzdavanja;
+    private String slikaUrl; // URL slike filma
+    private int trajanje; // Trajanje filma u minutama
+    private String trailerUrl; // URL trailera filma
 
     @ManyToMany(cascade = {
             CascadeType.MERGE,
@@ -54,13 +57,16 @@ public class Film {
     public Film() {}
 
     // Parametrizirani konstruktor
-    public Film(String naziv, String opis, int godinaIzdavanja) {
+    public Film(String naziv, String opis, int godinaIzdavanja, String slikaUrl, int trajanje, String trailerUrl) {
         this.naziv = naziv;
         this.opis = opis;
         this.godinaIzdavanja = godinaIzdavanja;
+        this.slikaUrl = slikaUrl;
+        this.trajanje = trajanje;
+        this.trailerUrl = trailerUrl;
     }
 
-    // Getteri i setteri
+    // Getteri i setteri za sve atribute, uključujući nove
     public Long getId() {
         return id;
     }
@@ -84,6 +90,24 @@ public class Film {
     }
     public void setGodinaIzdavanja(int godinaIzdavanja) {
         this.godinaIzdavanja = godinaIzdavanja;
+    }
+    public String getSlikaUrl() {
+        return slikaUrl;
+    }
+    public void setSlikaUrl(String slikaUrl) {
+        this.slikaUrl = slikaUrl;
+    }
+    public int getTrajanje() {
+        return trajanje;
+    }
+    public void setTrajanje(int trajanje) {
+        this.trajanje = trajanje;
+    }
+    public String getTrailerUrl() {
+        return trailerUrl;
+    }
+    public void setTrailerUrl(String trailerUrl) {
+        this.trailerUrl = trailerUrl;
     }
     public Set < Zanr > getZanrovi() {
         return zanrovi;
@@ -115,37 +139,30 @@ public class Film {
         zanrovi.add(zanr);
         zanr.getFilmovi().add(this);
     }
-
     public void removeZanr(Zanr zanr) {
         zanrovi.remove(zanr);
         zanr.getFilmovi().remove(this);
     }
-
     public void addRecenzija(Recenzija recenzija) {
         recenzije.add(recenzija);
         recenzija.setFilm(this);
     }
-
     public void removeRecenzija(Recenzija recenzija) {
         recenzije.remove(recenzija);
         recenzija.setFilm(null);
     }
-
     public void addGlumac(Glumac glumac) {
         glumci.add(glumac);
         glumac.getFilmovi().add(this);
     }
-
     public void removeGlumac(Glumac glumac) {
         glumci.remove(glumac);
         glumac.getFilmovi().remove(this);
     }
-
     public void addRedatelj(Redatelj redatelj) {
         redatelji.add(redatelj);
         redatelj.getFilmovi().add(this);
     }
-
     public void removeRedatelj(Redatelj redatelj) {
         redatelji.remove(redatelj);
         redatelj.getFilmovi().remove(this);

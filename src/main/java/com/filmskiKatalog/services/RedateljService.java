@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class RedateljService {
@@ -20,6 +21,11 @@ public class RedateljService {
     public Optional<Redatelj> findRedateljById(Long id) {
         return redateljRepository.findById(id);
     }
+
+    public List<Redatelj> findAllById(Set<Long> ids) {
+        return redateljRepository.findAllById(ids); // Ova metoda koristi JpaRepository metodu findAllById
+    }
+
 
     public Redatelj saveRedatelj(Redatelj redatelj) {
         return redateljRepository.save(redatelj);

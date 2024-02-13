@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ZanrService {
@@ -19,6 +20,10 @@ public class ZanrService {
 
     public Optional<Zanr> findZanrById(Long id) {
         return zanrRepository.findById(id);
+    }
+
+    public List<Zanr> findAllById(Set<Long> ids) {
+        return zanrRepository.findAllById(ids); // Ova metoda koristi JpaRepository metodu findAllById
     }
 
     public Zanr saveZanr(Zanr zanr) {

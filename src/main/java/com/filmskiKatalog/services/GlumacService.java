@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class GlumacService {
@@ -19,6 +20,10 @@ public class GlumacService {
 
     public Optional<Glumac> findGlumacById(Long id) {
         return glumacRepository.findById(id);
+    }
+
+    public List<Glumac> findAllById(Set<Long> ids) {
+        return glumacRepository.findAllById(ids); // Ova metoda koristi JpaRepository metodu findAllById
     }
 
     public Glumac saveGlumac(Glumac glumac) {

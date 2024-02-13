@@ -14,6 +14,22 @@
             <label for="ime">Ime Glumca</label>
             <input type="text" id="ime" name="ime" class="form-control" th:field="*{ime}" required>
         </div>
+        <div class="form-group">
+            <label for="biografija">Biografija</label>
+            <textarea id="biografija" name="biografija" class="form-control" th:field="*{biografija}" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="slikaUrl">Slika Glumca (URL)</label>
+            <input type="text" id="slikaUrl" name="slikaUrl" class="form-control" th:field="*{slikaUrl}" placeholder="Unesite URL slike glumca">
+        </div>
+        <div class="form-group">
+            <label for="datumRodjenja">Datum Rodjenja</label>
+            <input type="date" id="datumRodjenja" name="datumRodjenja" class="form-control" th:field="*{datumRodjenja}" required>
+        </div>
+        <div class="form-group">
+            <label for="mjestoRodjenja">Mjesto Rodjenja</label>
+            <input type="text" id="mjestoRodjenja" name="mjestoRodjenja" class="form-control" th:field="*{mjestoRodjenja}" required>
+        </div>
         <!-- Dodati dodatne polja za unos po potrebi -->
         <button type="submit" class="btn btn-primary">Ažuriraj Glumca</button>
     </form>

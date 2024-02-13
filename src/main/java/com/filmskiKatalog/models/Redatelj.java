@@ -1,6 +1,7 @@
 package com.filmskiKatalog.models;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,20 +12,25 @@ public class Redatelj {
     private Long id;
 
     private String ime;
+    private String biografija;
+    private String slikaUrl;
+    private LocalDate datumRodjenja;
+    private String mjestoRodjenja;
 
     @ManyToMany(mappedBy = "redatelji", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     private Set<Film> filmovi = new HashSet<>();
 
-    // Defaultni konstruktor
     public Redatelj() {
     }
 
-    // Parametrizirani konstruktor
-    public Redatelj(String ime) {
+    public Redatelj(String ime, String biografija, String slikaUrl, LocalDate datumRodjenja, String mjestoRodjenja) {
         this.ime = ime;
+        this.biografija = biografija;
+        this.slikaUrl = slikaUrl;
+        this.datumRodjenja = datumRodjenja;
+        this.mjestoRodjenja = mjestoRodjenja;
     }
 
-    // Getteri i setteri
     public Long getId() {
         return id;
     }
@@ -41,6 +47,38 @@ public class Redatelj {
         this.ime = ime;
     }
 
+    public String getBiografija() {
+        return biografija;
+    }
+
+    public void setBiografija(String biografija) {
+        this.biografija = biografija;
+    }
+
+    public String getSlikaUrl() {
+        return slikaUrl;
+    }
+
+    public void setSlikaUrl(String slikaUrl) {
+        this.slikaUrl = slikaUrl;
+    }
+
+    public LocalDate getDatumRodjenja() {
+        return datumRodjenja;
+    }
+
+    public void setDatumRodjenja(LocalDate datumRodjenja) {
+        this.datumRodjenja = datumRodjenja;
+    }
+
+    public String getMjestoRodjenja() {
+        return mjestoRodjenja;
+    }
+
+    public void setMjestoRodjenja(String mjestoRodjenja) {
+        this.mjestoRodjenja = mjestoRodjenja;
+    }
+
     public Set<Film> getFilmovi() {
         return filmovi;
     }
@@ -49,7 +87,6 @@ public class Redatelj {
         this.filmovi = filmovi;
     }
 
-    // Metode za upravljanje vezama
     public void addFilm(Film film) {
         this.filmovi.add(film);
         film.getRedatelji().add(this);
