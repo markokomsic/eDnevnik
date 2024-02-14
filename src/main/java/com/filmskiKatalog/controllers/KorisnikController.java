@@ -19,19 +19,19 @@ public class KorisnikController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping
-    public String korisnikDashboard(Model model, Principal principal) {
+    @GetMapping("/dashboard")
+    public String dashboard(Model model, Principal principal) {
         if (principal != null) {
-            String email = principal.getName(); // Dohvati email trenutno prijavljenog korisnika
-            User korisnik = userRepository.findByEmail(email); // Pretpostavka da metoda vraća User objekat
+            String email = principal.getName();
+            User korisnik = userRepository.findByEmail(email);
             if (korisnik != null) {
                 model.addAttribute("korisnik", korisnik);
             } else {
-                // Ako korisnik nije pronađen, možete dodati logiku za obradu ove situacije
+                // Ako korisnik nije pronađen, preusmjerite na stranicu za prijavu ili prikažite poruku
+                return "redirect:/login"; // Primjer preusmjeravanja na stranicu za prijavu
             }
         }
-        return "korisnik/dashboard"; // Naziv Thymeleaf šablona za korisnički dashboard
+        return "korisnik/dashboard";
     }
-
-    // Ostale metode specifične za korisnika
 }
+

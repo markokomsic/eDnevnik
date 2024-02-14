@@ -27,7 +27,7 @@ public class RecenzijaController {
         if (korisnik == null) {
             return new ResponseEntity<>("Korisnik nije pronađen", HttpStatus.NOT_FOUND);
         }
-        recenzija.setKorisnik(korisnik);
+        recenzija.setUser(korisnik);
         Recenzija savedRecenzija = recenzijaRepository.save(recenzija);
         return new ResponseEntity<>(savedRecenzija, HttpStatus.CREATED);
     }
@@ -43,7 +43,7 @@ public class RecenzijaController {
         User korisnik = userRepository.findByEmail(email);
 
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-        if (!recenzija.getKorisnik().equals(korisnik) && !isAdmin) {
+        if (!recenzija.getUser().equals(korisnik) && !isAdmin) {
             return new ResponseEntity<>("Nemate pravo brisati ovu recenziju", HttpStatus.FORBIDDEN);
         }
 

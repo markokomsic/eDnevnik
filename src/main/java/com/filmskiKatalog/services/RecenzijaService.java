@@ -24,6 +24,11 @@ public class RecenzijaService {
     public Recenzija saveRecenzija(Recenzija recenzija) {
         return recenzijaRepository.save(recenzija);
     }
+    // U RecenzijaService
+    public List<Recenzija> findAllByFilmId(Long filmId) {
+        return recenzijaRepository.findAllByFilmId(filmId); // Pretpostavimo da imate ovu metodu u repositoryju
+    }
+
 
     public void deleteRecenzija(Long id) {
         recenzijaRepository.deleteById(id);

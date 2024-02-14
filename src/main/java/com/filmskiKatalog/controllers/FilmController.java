@@ -1,20 +1,17 @@
 package com.filmskiKatalog.controllers;
 
-import com.filmskiKatalog.models.Film;
-import com.filmskiKatalog.models.Glumac;
-import com.filmskiKatalog.models.Redatelj;
-import com.filmskiKatalog.models.Zanr;
-import com.filmskiKatalog.services.FilmService;
-import com.filmskiKatalog.services.GlumacService;
-import com.filmskiKatalog.services.RedateljService;
-import com.filmskiKatalog.services.ZanrService;
+import com.filmskiKatalog.models.*;
+import com.filmskiKatalog.repositories.UserRepository;
+import com.filmskiKatalog.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -32,9 +29,15 @@ public class FilmController {
     private GlumacService glumacService;
     @Autowired
     private RedateljService redateljService;
+    @Autowired
+    private RecenzijaService recenzijaService;
+    @Autowired
+    private UserRepository userRepository; // Ovo je ispravno ime vašeg repozitorija
+
+
 
     @GetMapping("/film-list")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String listAllFilms(Model model) {
         List<Film> filmovi = filmService.findAllFilms();
         model.addAttribute("filmovi", filmovi);
@@ -123,7 +126,64 @@ public class FilmController {
     @GetMapping("/film-details/{id}")
     public String showFilmDetails(@PathVariable Long id, Model model) {
         Optional<Film> filmOptional = filmService.findFilmById(id);
-        filmOptional.ifPresent(film -> model.addAttribute("film", film));
-        return filmOptional.isPresent() ? "filmovi/film-details" : "redirect:/filmovi/film-list";
+        if (filmOptional.isPresent()) {
+            Film film = filmOptional.get();
+            model.addAttribute("film", film);
+            List<Recenzija> recenzije = recenzijaService.findAllByFilmId(film.getId()); // Koristite novu metodu
+            model.addAttribute("recenzije", recenzije);
+            model.addAttribute("novaRecenzija", new Recenzija()); // Za formu dodavanja nove recenzije
+            return "filmovi/film-details";
+        } else {
+            return "redirect:/filmovi/home";
+        }
     }
+
+    @PostMapping("/addRecenzija")
+    public String addRecenzija(@ModelAttribute("novaRecenzija") Recenzija novaRecenzija,
+                               @RequestParam("filmId") Long filmId, Principal principal) {
+        String email = principal.getName(); // Dohvaća e-mail trenutno prijavljenog korisnika
+        User user = userRepository.findByEmail(email); // Pretpostavljamo da metoda findByEmail postoji
+
+        if (user == null) {
+            throw new UsernameNotFoundException("Korisnik nije pronađen s e-mailom: " + email);
+        }
+
+        Film film = filmService.findFilmById(filmId)
+                .orElseThrow(() -> new IllegalArgumentException("Neispravan ID filma: " + filmId));
+        novaRecenzija.setUser(user); // Postavljanje korisnika za recenziju
+        novaRecenzija.setFilm(film); // Postavljanje filma za recenziju
+        recenzijaService.saveRecenzija(novaRecenzija); // Spremanje recenzije
+        return "redirect:/filmovi/film-details/" + filmId; // Preusmjeravanje na stranicu s detaljima filma
+    }
+
+
+
+
+
+    @GetMapping("/home")
+    public String home(Model model) {
+        List<Film> filmovi = filmService.findAllFilms();
+        model.addAttribute("filmovi", filmovi);
+        return "filmovi/home"; // Pobrinite se da je ovo ispravna putanja do vašeg template-a
+    }
+
+    @PostMapping("/recenzija/{recenzijaId}/like")
+    public String addLikeToRecenzija(@PathVariable Long recenzijaId) {
+        Recenzija recenzija = recenzijaService.findRecenzijaById(recenzijaId)
+                .orElseThrow(() -> new IllegalArgumentException("Neispravan ID recenzije: " + recenzijaId));
+        recenzija.dodajLike();
+        recenzijaService.saveRecenzija(recenzija);
+        return "redirect:/film-details/" + recenzija.getFilm().getId();
+    }
+
+    @PostMapping("/recenzija/{recenzijaId}/dislike")
+    public String addDislikeToRecenzija(@PathVariable Long recenzijaId) {
+        Recenzija recenzija = recenzijaService.findRecenzijaById(recenzijaId)
+                .orElseThrow(() -> new IllegalArgumentException("Neispravan ID recenzije: " + recenzijaId));
+        recenzija.dodajDislike();
+        recenzijaService.saveRecenzija(recenzija);
+        return "redirect:/film-details/" + recenzija.getFilm().getId();
+    }
+
+
 }

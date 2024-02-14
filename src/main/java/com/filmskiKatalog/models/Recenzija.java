@@ -19,8 +19,8 @@ public class Recenzija {
     private Film film;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "korisnik_id")
-    private User korisnik; // Pretpostavka da postoji entitet User
+    @JoinColumn(name = "user_id")
+    private User user; // Pretpostavka da postoji entitet User
 
     private LocalDate datumObjave;
 
@@ -28,16 +28,20 @@ public class Recenzija {
     private int brojDislikeova;
 
     public Recenzija() {
+        this.datumObjave = LocalDate.now();
+        this.brojLikeova = 0;
+        this.brojDislikeova = 0;
     }
 
-    public Recenzija(String tekst, int ocjena, Film film, User korisnik, LocalDate datumObjave) {
+
+    public Recenzija(String tekst, int ocjena, Film film, User user, LocalDate datumObjave) {
         this.tekst = tekst;
         this.ocjena = ocjena;
         this.film = film;
-        this.korisnik = korisnik;
-        this.datumObjave = datumObjave;
-        this.brojLikeova = 0; // Inicijalno postavljamo na 0
-        this.brojDislikeova = 0; // Inicijalno postavljamo na 0
+        this.user = user;
+        this.datumObjave = datumObjave != null ? datumObjave : LocalDate.now(); // Postavlja se na proslijeđeni datum ili na trenutni datum ako je proslijeđeni datum null
+        this.brojLikeova = 0;
+        this.brojDislikeova = 0;
     }
 
     // Getteri i setteri
@@ -73,12 +77,12 @@ public class Recenzija {
         this.film = film;
     }
 
-    public User getKorisnik() {
-        return korisnik;
+    public User getUser() {
+        return user;
     }
 
-    public void setKorisnik(User korisnik) {
-        this.korisnik = korisnik;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDate getDatumObjave() {

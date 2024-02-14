@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <title>Detalji Filma</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .img-fluid {
+            max-width: 200px;
+            max-height: 300px;
+            width: auto;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-4">
@@ -13,31 +21,74 @@
             <h2 class="card-title" th:text="${film.naziv}">Naziv Filma</h2>
             <h5 class="card-subtitle mb-2 text-muted" th:text="'Godina izdavanja: ' + ${film.godinaIzdavanja}">Godina Izdavanja</h5>
             <p class="card-text" th:text="${film.opis}">Opis Filma</p>
-            <h4>Žanrovi:</h4>
-            <ul>
-                <li th:each="zanr : ${film.zanrovi}" th:text="${zanr.naziv}">Žanr</li>
-            </ul>
-            <h4>Glumci:</h4>
-            <ul>
-                <li th:each="glumac : ${film.glumci}" th:text="${glumac.ime}">Glumac</li>
-            </ul>
-            <h4>Redatelji:</h4>
-            <ul>
-                <li th:each="redatelj : ${film.redatelji}" th:text="${redatelj.ime}">Redatelj</li>
-            </ul>
-            <div class="mt-3">
-                <img th:src="${film.slikaUrl}" alt="Slika Filma" class="img-fluid" th:if="${film.slikaUrl}">
+            <div>
+                <h4>Žanrovi:</h4>
+                <ul>
+                    <li th:each="zanr : ${film.zanrovi}" th:text="${zanr.naziv}">Žanr</li>
+                </ul>
+                <h4>Glumci:</h4>
+                <ul>
+                    <li th:each="glumac : ${film.glumci}" th:text="${glumac.ime}">Glumac</li>
+                </ul>
+                <h4>Redatelji:</h4>
+                <ul>
+                    <li th:each="redatelj : ${film.redatelji}" th:text="${redatelj.ime}">Redatelj</li>
+                </ul>
+                <div class="mt-3">
+                    <img th:src="${film.slikaUrl}" alt="Slika Filma" class="img-fluid" th:if="${film.slikaUrl}">
+                </div>
+                <div class="mt-3">
+                    <h5>Trajanje: <span th:text="${film.trajanje} + ' minuta'">Trajanje filma</span></h5>
+                </div>
+                <div class="mt-3">
+                    <a th:href="${film.trailerUrl}" target="_blank" th:if="${film.trailerUrl}">Pogledaj Trailer</a>
+                </div>
             </div>
-            <div class="mt-3">
-                <h5>Trajanje: <span th:text="${film.trajanje} + ' minuta'">Trajanje filma</span></h5>
-            </div>
-            <div class="mt-3">
-                <a th:href="${film.trailerUrl}" target="_blank" th:if="${film.trailerUrl}">Pogledaj Trailer</a>
-            </div>
-            <!-- Dodatne informacije o filmu -->
-            <a th:href="@{/filmovi/film-list}" class="card-link">Povratak na listu filmova</a>
+            <a th:href="@{/filmovi/home}" class="card-link">Povratak na listu filmova</a>
         </div>
     </div>
+
+    <div class="mt-4">
+        <h3>Recenzije</h3>
+        <div th:if="${not #lists.isEmpty(recenzije)}">
+            <div th:each="recenzija : ${recenzije}">
+                <p><strong>Autor:</strong> <span th:text="${recenzija.user.ime} + ' ' + ${recenzija.user.prezime}"></span></p>
+                <p><strong>Datum objave:</strong> <span th:text="${recenzija.datumObjave}"></span></p>
+                <p><strong>Ocjena:</strong> <span th:text="${recenzija.ocjena}"></span> / 10</p>
+                <p><strong>Tekst recenzije:</strong> <span th:text="${recenzija.tekst}"></span></p>
+                <p><strong>Likeovi:</strong> <span th:text="${recenzija.brojLikeova}"></span>
+                    <a th:href="@{/recenzija/{id}/like(recenzijaId=${recenzija.id})}">Like</a>
+                </p>
+                <p><strong>Dislikeovi:</strong> <span th:text="${recenzija.brojDislikeova}"></span>
+                    <a th:href="@{/recenzija/{id}/dislike(recenzijaId=${recenzija.id})}">Dislike</a>
+                </p>
+                <hr/>
+            </div>
+        </div>
+        <div th:if="${#lists.isEmpty(recenzije)}">
+            <p>Nema recenzija za ovaj film.</p>
+        </div>
+    </div>
+
+
+    <!-- Forma za dodavanje nove recenzije -->
+    <div class="mt-4">
+        <h3>Dodaj novu recenziju</h3>
+        <form th:action="@{/filmovi/addRecenzija}" method="post">
+
+        <input type="hidden" name="filmId" th:value="${film.id}"/>
+            <div class="form-group">
+                <label for="tekstRecenzije">Vaša recenzija</label>
+                <textarea id="tekstRecenzije" name="tekst" class="form-control" placeholder="Unesite recenziju ovdje..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="ocjenaRecenzije">Ocjena</label>
+                <input type="number" id="ocjenaRecenzije" name="ocjena" class="form-control" min="1" max="10" required/>
+            </div>
+            <button type="submit" class="btn btn-primary">Pošalji recenziju</button>
+        </form>
+    </div>
+
 </div>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 </body>
