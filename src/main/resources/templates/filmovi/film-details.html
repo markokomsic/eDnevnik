@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" >
 <head>
     <meta charset="UTF-8">
     <title>Detalji Filma</title>
@@ -16,6 +16,7 @@
 <body>
 <div class="container mt-4">
     <h1>Detalji Filma</h1>
+    <a href="/filmovi/home" class="btn btn-secondary mb-4">Povratak na početnu</a>
     <div class="card">
         <div class="card-body">
             <h2 class="card-title" th:text="${film.naziv}">Naziv Filma</h2>
@@ -28,11 +29,15 @@
                 </ul>
                 <h4>Glumci:</h4>
                 <ul>
-                    <li th:each="glumac : ${film.glumci}" th:text="${glumac.ime}">Glumac</li>
+                    <li th:each="glumac : ${film.glumci}">
+                        <a th:href="@{/glumci/glumac-details/{id}(id=${glumac.id})}" th:text="${glumac.ime}"></a>
+                    </li>
                 </ul>
                 <h4>Redatelji:</h4>
                 <ul>
-                    <li th:each="redatelj : ${film.redatelji}" th:text="${redatelj.ime}">Redatelj</li>
+                    <li th:each="redatelj : ${film.redatelji}">
+                        <a th:href="@{/redatelji/redatelj-details/{id}(id=${redatelj.id})}" th:text="${redatelj.ime}"></a>
+                    </li>
                 </ul>
                 <div class="mt-3">
                     <img th:src="${film.slikaUrl}" alt="Slika Filma" class="img-fluid" th:if="${film.slikaUrl}">
@@ -52,16 +57,31 @@
         <h3>Recenzije</h3>
         <div th:if="${not #lists.isEmpty(recenzije)}">
             <div th:each="recenzija : ${recenzije}">
-                <p><strong>Autor:</strong> <span th:text="${recenzija.user.ime} + ' ' + ${recenzija.user.prezime}"></span></p>
-                <p><strong>Datum objave:</strong> <span th:text="${recenzija.datumObjave}"></span></p>
-                <p><strong>Ocjena:</strong> <span th:text="${recenzija.ocjena}"></span> / 10</p>
-                <p><strong>Tekst recenzije:</strong> <span th:text="${recenzija.tekst}"></span></p>
-                <p><strong>Likeovi:</strong> <span th:text="${recenzija.brojLikeova}"></span>
-                    <a th:href="@{/recenzija/{id}/like(recenzijaId=${recenzija.id})}">Like</a>
-                </p>
-                <p><strong>Dislikeovi:</strong> <span th:text="${recenzija.brojDislikeova}"></span>
-                    <a th:href="@{/recenzija/{id}/dislike(recenzijaId=${recenzija.id})}">Dislike</a>
-                </p>
+                <div>
+                    <p><strong>Autor:</strong> <span th:text="${recenzija.user.ime} + ' ' + ${recenzija.user.prezime}"></span></p>
+                    <p><strong>Datum objave:</strong> <span th:text="${recenzija.datumObjave}"></span></p>
+                    <p><strong>Ocjena:</strong> <span th:text="${recenzija.ocjena}"></span> / 10</p>
+                    <p><strong>Tekst recenzije:</strong> <span th:text="${recenzija.tekst}"></span></p>
+                    <p><strong>Likeovi:</strong> <span th:text="${recenzija.brojLikeova}"></span>
+                    <form th:action="@{|/recenzija/${recenzija.id}/like|}" method="post">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                        <input type="submit" value="Like">
+                    </form>
+                    </p>
+                    <p><strong>Dislikeovi:</strong> <span th:text="${recenzija.brojDislikeova}"></span>
+                    <form th:action="@{|/recenzija/${recenzija.id}/dislike|}" method="post">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                        <input type="submit" value="Dislike">
+                    </form>
+                    </p>
+                    <!-- Forma za brisanje recenzije (dostupno samo ADMIN) -->
+                    <form th:action="@{/recenzija/delete/{id}(id=${recenzija.id})}" method="post">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                        <button type="submit" class="btn btn-danger">Obriši recenziju</button>
+                    </form>
+
+                    <!-- Kraj forme za brisanje recenzije -->
+                </div>
                 <hr/>
             </div>
         </div>
@@ -69,6 +89,7 @@
             <p>Nema recenzija za ovaj film.</p>
         </div>
     </div>
+
 
 
     <!-- Forma za dodavanje nove recenzije -->
@@ -88,6 +109,19 @@
             <button type="submit" class="btn btn-primary">Pošalji recenziju</button>
         </form>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </div>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>

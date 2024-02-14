@@ -43,31 +43,26 @@ public class SecurityConfig {
 
 
     @Bean
-    public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/register/**","/auth/register")
-                .permitAll()
+                .requestMatchers("/auth/register/**", "/auth/register").permitAll()
                 .requestMatchers("/filmovi/home").authenticated()
+                .requestMatchers("/recenzije/{recenzijaId}/like", "/recenzije/{recenzijaId}/dislike").authenticated() // Dozvoljava autentificiranim korisnicima dodavanje likeova i dislikeova
                 .requestMatchers("/users/**").hasAuthority("ADMIN")
                 .requestMatchers("/korisnik/**").hasAnyAuthority("KORISNIK")
-                .anyRequest()
-                .authenticated()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin().successHandler(myAuthenticationSuccessHandler())
-                .loginPage("/auth/login")
-                .permitAll()
-                .usernameParameter("email")
-                .permitAll()
+                .loginPage("/auth/login").permitAll()
+                .usernameParameter("email").permitAll()
                 .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/").permitAll();
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/").permitAll();
 
         http.authenticationProvider(authenticationProvider());
         http.headers().frameOptions().sameOrigin();
 
         return http.build();
-
     }
+
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Korisnikova Stranica</title>
@@ -7,7 +7,8 @@
 </head>
 <body>
 <div class="container mt-4">
-    <h1>Dobrodošli, [[${korisnik.ime}]]!</h1> <!-- Pretpostavljamo da je `user` objekt dostupan u modelu -->
+    <h1>Dobrodošli, <span th:text="${korisnik.ime}"></span>!</h1>
+    <a href="/filmovi/home" class="btn btn-primary">Početna stranica</a> <!-- Gumb za povratak na početnu stranicu -->
     <form th:action="@{/logout}" method="post">
         <button type="submit" class="btn btn-danger">Odjavi se</button>
     </form>
@@ -17,9 +18,11 @@
             <p class="card-text">Pregledajte recenzije koje ste napisali.</p>
             <ul>
                 <li th:each="recenzija : ${recenzije}">
-                    <span th:text="${recenzija.film.naziv}">Naziv Filma</span>:
-                    <span th:text="${recenzija.tekst}">Tekst Recenzije</span>
-                    (Ocjena: <span th:text="${recenzija.ocjena}">Ocjena</span>)
+                    <a th:href="@{/filmovi/film-details/{id}(id=${recenzija.film.id})}">
+                        <span th:text="${recenzija.film.naziv}">Naziv Filma</span>:
+                        <span th:text="${recenzija.tekst}">Tekst Recenzije</span>
+                        (Ocjena: <span th:text="${recenzija.ocjena}">Ocjena</span>)
+                    </a>
                 </li>
             </ul>
         </div>

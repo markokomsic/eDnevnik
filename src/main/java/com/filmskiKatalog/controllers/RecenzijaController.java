@@ -8,10 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@RestController
-@RequestMapping("/recenzije")
+@Controller
+@RequestMapping("/recenzija")
 public class RecenzijaController {
 
     @Autowired
@@ -32,24 +37,59 @@ public class RecenzijaController {
         return new ResponseEntity<>(savedRecenzija, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteRecenzija(@PathVariable Long id, Authentication authentication) {
+    @PostMapping("/delete/{id}")
+    public String deleteRecenzija(@PathVariable Long id, Authentication authentication, RedirectAttributes redirectAttributes) {
         Recenzija recenzija = recenzijaRepository.findById(id).orElse(null);
         if (recenzija == null) {
-            return new ResponseEntity<>("Recenzija nije pronađena", HttpStatus.NOT_FOUND);
+            redirectAttributes.addFlashAttribute("errorMessage", "Recenzija nije pronađena");
+            return "redirect:/nekadestinacija"; // Možete promijeniti u općenitiju destinaciju ako je potrebno
         }
+
+        Long filmId = recenzija.getFilm().getId(); // Zabilježite ID filma prije brisanja recenzije
 
         String email = authentication.getName();
         User korisnik = userRepository.findByEmail(email);
+        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"));
 
-        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-        if (!recenzija.getUser().equals(korisnik) && !isAdmin) {
-            return new ResponseEntity<>("Nemate pravo brisati ovu recenziju", HttpStatus.FORBIDDEN);
+        // Dodajte provjeru da li je korisnik autor recenzije
+        boolean isAuthor = recenzija.getUser().equals(korisnik);
+
+        // Provjerite je li korisnik autor recenzije ili je administrator
+        if (!isAdmin && !isAuthor) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Nemate pravo brisati ovu recenziju");
+            return "redirect:/filmovi/film-details/" + filmId;
         }
 
         recenzijaRepository.delete(recenzija);
-        return new ResponseEntity<>(HttpStatus.OK);
+        redirectAttributes.addFlashAttribute("successMessage", "Recenzija je uspješno obrisana");
+        return "redirect:/filmovi/film-details/" + filmId; // Preusmjerite na stranicu s detaljima filma
     }
 
-    // Dodajte dodatne metode prema potrebi
+
+
+    @PostMapping("/{recenzijaId}/like")
+    public String addLikeToRecenzija(@PathVariable Long recenzijaId, RedirectAttributes redirectAttributes) {
+        Recenzija recenzija = recenzijaRepository.findById(recenzijaId).orElse(null);
+        if (recenzija != null) {
+            recenzija.dodajLike();
+            recenzijaRepository.save(recenzija);
+            redirectAttributes.addFlashAttribute("successMessage", "Like dodan uspješno!");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Recenzija nije pronađena.");
+        }
+        return "redirect:/filmovi/film-details/" + (recenzija != null ? recenzija.getFilm().getId() : "");
+    }
+
+    @PostMapping("/{recenzijaId}/dislike")
+    public String addDislikeToRecenzija(@PathVariable Long recenzijaId, RedirectAttributes redirectAttributes) {
+        Recenzija recenzija = recenzijaRepository.findById(recenzijaId).orElse(null);
+        if (recenzija != null) {
+            recenzija.dodajDislike();
+            recenzijaRepository.save(recenzija);
+            redirectAttributes.addFlashAttribute("successMessage", "Dislike dodan uspješno!");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Recenzija nije pronađena.");
+        }
+        return "redirect:/filmovi/film-details/" + (recenzija != null ? recenzija.getFilm().getId() : "");
+    }
 }

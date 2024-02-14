@@ -27,7 +27,9 @@
             <p><strong>Mjesto Rođenja:</strong> <span th:text="${redatelj.mjestoRodjenja}"></span></p>
             <h4>Filmovi:</h4>
             <ul>
-                <li th:each="film : ${redatelj.filmovi}" th:text="${film.naziv}"></li>
+                <li th:each="film : ${redatelj.filmovi}">
+                    <a th:href="@{/filmovi/film-details/{id}(id=${film.id})}" th:text="${film.naziv}"></a>
+                </li>
             </ul>
 
         </div>
