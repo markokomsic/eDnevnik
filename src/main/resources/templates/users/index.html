@@ -1,21 +1,57 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Lista Korisnika</title>
+    <title>Admin Control Panel</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f7f8fa;
+            background-image: linear-gradient(to right top, #e9eff9, #e9eff9, #e9eff9, #e9eff9, #e9eff9);
+        }
+        .table {
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,.1);
+        }
+        .btn {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .btn-danger {
+            box-shadow: 0 2px 4px rgba(220,53,69,.3);
+        }
+        .btn-info {
+            box-shadow: 0 2px 4px rgba(23,162,184,.3);
+        }
+        .btn-success {
+            box-shadow: 0 2px 4px rgba(40,167,69,.3);
+        }
+        .btn-primary {
+            box-shadow: 0 2px 4px rgba(0,123,255,.3);
+        }
+        th, td {
+            text-align: center;
+        }
+        .badge {
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-5">
-    <h2>Lista Korisnika</h2>
-    <a href="/users/add" class="btn btn-success">Dodaj Novog Korisnika</a>
-    <a href="/filmovi/film-list" class="btn btn-info">Upravljaj Filmovima</a> <!-- Dodano -->
-    <a href="/glumci/glumac-list" class="btn btn-info">Upravljaj Glumcima</a> <!-- Dodano -->
-    <a href="/redatelji/redatelj-list" class="btn btn-info">Upravljaj Redateljima</a> <!-- Dodano -->
-
-    <form th:action="@{/logout}" method="post" class="d-inline">
-        <button type="submit" class="btn btn-danger">Odjavi se</button>
-    </form>
-
+    <h1 class="text-center">Admin Control Panel</h1>
+    <div class="mb-3">
+        <a href="/users/add" class="btn btn-success">Dodaj Novog Korisnika</a>
+        <a href="/filmovi/film-list" class="btn btn-info">Upravljaj Filmovima</a>
+        <a href="/glumci/glumac-list" class="btn btn-info">Upravljaj Glumcima</a>
+        <a href="/redatelji/redatelj-list" class="btn btn-info">Upravljaj Redateljima</a>
+        <form th:action="@{/logout}" method="post" class="d-inline">
+            <button type="submit" class="btn btn-danger">Odjavi se</button>
+        </form>
+    </div>
+    <h3 class="text-center">Lista Korisnika</h3>
     <table class="table">
         <thead>
         <tr>
@@ -32,14 +68,14 @@
             <td th:text="${user.prezime}">Prezime</td>
             <td th:text="${user.email}">Email</td>
             <td>
-                <span th:each="role : ${user.roles}" class="badge badge-primary mr-1" th:text="${role}"></span>
+                <span th:each="role : ${user.roles}" class="badge badge-primary" th:text="${role}"></span>
             </td>
             <td>
                 <div>
                     <form th:action="@{/users/delete/{userId}(userId=${user.id})}" method="post" class="d-inline">
                         <button type="submit" class="btn btn-danger">Obriši</button>
                     </form>
-                    <a th:href="@{/users/edit/{userId}(userId=${user.id})}" class="btn btn-primary d-inline-block">Uredi</a>
+                    <a th:href="@{/users/edit/{userId}(userId=${user.id})}" class="btn btn-primary">Uredi</a>
                 </div>
             </td>
         </tr>

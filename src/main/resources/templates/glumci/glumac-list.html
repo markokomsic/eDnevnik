@@ -4,6 +4,46 @@
     <meta charset="UTF-8">
     <title>Lista Glumaca</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f7f8fa;
+            background-image: linear-gradient(to right top, #a5f3eb, #85e9e5, #65dfe0, #46d4db, #2cc9d6);
+            background-attachment: fixed;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,.1);
+            margin-top: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .table {
+            margin-top: 20px;
+        }
+        .btn {
+            margin: 5px;
+        }
+        .btn-success {
+            box-shadow: 0 2px 4px rgba(40,167,69,.3);
+        }
+        .btn-primary {
+            box-shadow: 0 2px 4px rgba(0,123,255,.3);
+        }
+        .btn-info {
+            box-shadow: 0 2px 4px rgba(23,162,184,.3);
+        }
+        .btn-danger {
+            box-shadow: 0 2px 4px rgba(220,53,69,.3);
+        }
+        th, td {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-4">
@@ -21,7 +61,7 @@
         </thead>
         <tbody>
         <tr th:each="glumac : ${glumci}">
-            <td th:text="${glumac.ime}">Ime Glumca</td>
+            <td th:text="${glumac.ime}"></td>
             <td>
                 <a th:href="@{/glumci/glumac-details/{id}(id=${glumac.id})}" class="btn btn-info">Detalji</a>
             </td>

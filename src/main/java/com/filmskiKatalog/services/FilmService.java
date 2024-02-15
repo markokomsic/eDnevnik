@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.Comparator;
 
 @Service
 public class FilmService {
@@ -29,5 +31,13 @@ public class FilmService {
         filmRepository.deleteById(id);
     }
 
-    // Dodajte dodatne metode prema potrebi
+    public List<Film> searchByQuery(String query) {
+
+        return filmRepository.findByNazivContainingIgnoreCase(query);
+    }
+    public List<Film> findAllSortedByOcjena() {
+        return filmRepository.findAll().stream()
+                .sorted(Comparator.comparingDouble(Film::getProsjecnaOcjena).reversed()) // Sortiranje od najveće prema najmanjoj ocjeni
+                .collect(Collectors.toList());
+    }
 }

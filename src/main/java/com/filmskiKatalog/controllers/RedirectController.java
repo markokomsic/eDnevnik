@@ -16,10 +16,10 @@ public class RedirectController {
             for (GrantedAuthority authority : authentication.getAuthorities()) {
                 if (authority.getAuthority().equals("ADMIN")) {
                     isAdmin = true;
-                    break; // Ako je korisnik admin, nema potrebe za daljnjom provjerom
+                    break;
                 } else if (authority.getAuthority().equals("KORISNIK")) {
                     isKorisnik = true;
-                    // Ne prekidamo petlju ovdje u slučaju da korisnik ima više uloga
+
                 }
             }
 
@@ -29,6 +29,6 @@ public class RedirectController {
                 return "redirect:/korisnik/dashboard";
             }
         }
-        return "redirect:/login"; // ili neka druga defaultna stranica za neprijavljene korisnike
+        return "redirect:/login";
     }
 }

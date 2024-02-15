@@ -12,6 +12,7 @@ public class Redatelj {
     private Long id;
 
     private String ime;
+    @Column(length = 10000)
     private String biografija;
     private String slikaUrl;
     private LocalDate datumRodjenja;

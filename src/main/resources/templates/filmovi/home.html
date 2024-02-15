@@ -2,53 +2,86 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Popis filmova</title>
-    <!-- Uključivanje Bootstrap CSS-a -->
+    <title>Filmski Katalog</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        .sticky-top {
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+        }
         .film-image {
             width: 100%;
-            height: auto;
+            height: 200px;
+            object-fit: cover;
             border-radius: 0.25rem;
         }
         .film-item {
             margin-bottom: 20px;
+            transition: transform .2s;
+        }
+        .film-item:hover {
+            transform: scale(1.05);
         }
         .details-button {
             margin-top: 10px;
         }
-        /* Dodatni stilovi za navigacijski gumb */
         .profile-button {
             position: absolute;
             right: 0;
             top: 0;
             margin: 20px;
         }
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .sort-button {
+            margin-left: 10px;
+        }
+        .ocjena-zvjezdica {
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
-<div class="container mt-5">
-    <h1 class="mb-4">Popis filmova</h1>
-    <!-- Gumb Moj profil -->
-
+<div class="container mt-5 sticky-top bg-white">
+    <h1 class="mb-4">Filmski Katalog</h1>
     <a href="/profile" class="btn btn-secondary profile-button">Moj profil</a>
 
+    <div class="search-bar">
+        <form action="/filmovi/search" method="get" class="input-group mb-3">
+            <input type="text" name="query" class="form-control" placeholder="Pretraži filmove..." aria-label="Pretraži filmove">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Pretraži</button>
+            </div>
+        </form>
+        <a href="/filmovi/sortiraniPoOcjeni" class="btn btn-outline-primary sort-button">Sortiraj po ocjenama</a>
+    </div>
+</div>
+
+<div class="container mt-3">
     <div class="row">
-        <!-- Iteracija kroz listu filmova -->
         <div class="col-md-4" th:each="film : ${filmovi}">
             <div class="card film-item">
                 <img th:src="${film.slikaUrl}" alt="Slika filma" class="card-img-top film-image">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${film.naziv}">Naziv filma</h5>
                     <p class="card-text" th:text="${film.opis}">Opis filma</p>
-                    <!-- Gumb za detalje o filmu -->
-                    <a th:href="@{/filmovi/film-details/{id}(id=${film.id})}" class="btn btn-primary details-button">Detalji</a>
+                    <p class="card-text">Žanrovi: <span th:each="zanr : ${film.zanrovi}" th:text="${zanr.naziv} + ' '"></span></p>
+
+                    <div class="d-flex align-items-center">
+                        <a th:href="@{/filmovi/film-details/{id}(id=${film.id})}" class="btn btn-primary details-button">Detalji</a>
+                        <span class="ocjena-zvjezdica">Ocjena ⭐ <span th:text="${film.prosjecnaOcjena}"></span></span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- Uključivanje Bootstrap JS i pomoćnih biblioteka -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -13,11 +13,11 @@ public class User {
     @GeneratedValue
     private Long id;
 
-    @Size(min=5, max=20, message = "Polje ime mora biti izmđu 5 i 20 znakova.")
+    @Size(min=3, max=20, message = "Polje ime mora biti izmđu 3 i 20 znakova.")
     @NotBlank(message="Polje ime je obvezno")
     String ime;
 
-    @Size(min=5, max=20, message = "Polje ime mora biti izmđu 5 i 20 znakova.")
+    @Size(min=2, max=20, message = "Polje ime mora biti izmđu 2 i 20 znakova.")
     @NotBlank(message="Polje prezime je obvezno")
     String prezime;
 

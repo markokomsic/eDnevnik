@@ -40,21 +40,22 @@ public class RecenzijaController {
     @PostMapping("/delete/{id}")
     public String deleteRecenzija(@PathVariable Long id, Authentication authentication, RedirectAttributes redirectAttributes) {
         Recenzija recenzija = recenzijaRepository.findById(id).orElse(null);
+        Long filmIdd = recenzija.getFilm().getId();
         if (recenzija == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Recenzija nije pronađena");
-            return "redirect:/nekadestinacija"; // Možete promijeniti u općenitiju destinaciju ako je potrebno
+            return "redirect:/filmovi/film-details/" + filmIdd;
         }
 
-        Long filmId = recenzija.getFilm().getId(); // Zabilježite ID filma prije brisanja recenzije
+        Long filmId = recenzija.getFilm().getId();
 
         String email = authentication.getName();
         User korisnik = userRepository.findByEmail(email);
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"));
 
-        // Dodajte provjeru da li je korisnik autor recenzije
+
         boolean isAuthor = recenzija.getUser().equals(korisnik);
 
-        // Provjerite je li korisnik autor recenzije ili je administrator
+
         if (!isAdmin && !isAuthor) {
             redirectAttributes.addFlashAttribute("errorMessage", "Nemate pravo brisati ovu recenziju");
             return "redirect:/filmovi/film-details/" + filmId;
@@ -62,7 +63,7 @@ public class RecenzijaController {
 
         recenzijaRepository.delete(recenzija);
         redirectAttributes.addFlashAttribute("successMessage", "Recenzija je uspješno obrisana");
-        return "redirect:/filmovi/film-details/" + filmId; // Preusmjerite na stranicu s detaljima filma
+        return "redirect:/filmovi/film-details/" + filmId;
     }
 
 

@@ -23,7 +23,7 @@ public class RedateljService {
     }
 
     public List<Redatelj> findAllById(Set<Long> ids) {
-        return redateljRepository.findAllById(ids); // Ova metoda koristi JpaRepository metodu findAllById
+        return redateljRepository.findAllById(ids);
     }
 
 
@@ -35,5 +35,5 @@ public class RedateljService {
         redateljRepository.deleteById(id);
     }
 
-    // Dodajte dodatne metode prema potrebi
+
 }

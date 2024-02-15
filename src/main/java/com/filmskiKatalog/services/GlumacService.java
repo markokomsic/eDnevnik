@@ -23,7 +23,7 @@ public class GlumacService {
     }
 
     public List<Glumac> findAllById(Set<Long> ids) {
-        return glumacRepository.findAllById(ids); // Ova metoda koristi JpaRepository metodu findAllById
+        return glumacRepository.findAllById(ids);
     }
 
     public Glumac saveGlumac(Glumac glumac) {
@@ -34,5 +34,4 @@ public class GlumacService {
         glumacRepository.deleteById(id);
     }
 
-    // Dodajte dodatne metode prema potrebi
 }

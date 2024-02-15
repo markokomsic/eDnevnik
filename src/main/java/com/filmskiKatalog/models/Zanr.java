@@ -16,16 +16,15 @@ public class Zanr {
     @ManyToMany(mappedBy = "zanrovi", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     private Set<Film> filmovi = new HashSet<>();
 
-    // Defaultni konstruktor
+
     public Zanr() {
     }
 
-    // Parametrizirani konstruktor
     public Zanr(String naziv) {
         this.naziv = naziv;
     }
 
-    // Getteri i setteri
+
     public Long getId() {
         return id;
     }

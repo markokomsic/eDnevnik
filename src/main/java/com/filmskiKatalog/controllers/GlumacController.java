@@ -52,7 +52,7 @@ public class GlumacController {
     @PostMapping("/edit-glumac/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String updateGlumac(@PathVariable Long id, @ModelAttribute("glumac") Glumac glumac, RedirectAttributes redirectAttributes) {
-        glumacService.saveGlumac(glumac); // Pretpostavljamo da save metoda ažurira glumca ako postoji ID
+        glumacService.saveGlumac(glumac);
         redirectAttributes.addFlashAttribute("successMessage", "Glumac je uspješno ažuriran!");
         return "redirect:/glumci/glumac-list";
     }

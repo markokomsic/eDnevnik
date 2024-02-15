@@ -24,9 +24,9 @@ public class RecenzijaService {
     public Recenzija saveRecenzija(Recenzija recenzija) {
         return recenzijaRepository.save(recenzija);
     }
-    // U RecenzijaService
+
     public List<Recenzija> findAllByFilmId(Long filmId) {
-        return recenzijaRepository.findAllByFilmId(filmId); // Pretpostavimo da imate ovu metodu u repositoryju
+        return recenzijaRepository.findAllByFilmId(filmId);
     }
 
 
@@ -34,5 +34,5 @@ public class RecenzijaService {
         recenzijaRepository.deleteById(id);
     }
 
-    // Dodajte dodatne metode prema potrebi, npr. dohvatanje svih recenzija za određeni film
+
 }

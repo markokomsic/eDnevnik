@@ -33,16 +33,16 @@ public class KorisnikController {
             if (korisnik != null) {
                 model.addAttribute("korisnik", korisnik);
 
-                // Dohvatite recenzije za trenutnog korisnika
+
                 List<Recenzija> recenzije = recenzijaRepository.findByUser(korisnik);
                 model.addAttribute("recenzije", recenzije);
             } else {
-                // Ako korisnik nije pronađen, preusmjerite na stranicu za prijavu ili prikažite poruku
-                return "redirect:/login"; // Primjer preusmjeravanja na stranicu za prijavu
+
+                return "redirect:/login";
             }
         }
         return "korisnik/dashboard";
     }
 
-    // Dodajte ostale metode koje su potrebne
+
 }

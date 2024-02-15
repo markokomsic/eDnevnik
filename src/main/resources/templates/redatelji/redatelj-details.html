@@ -3,38 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <title>Detalji Redatelja</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        /* Stil za ograničavanje veličine slike */
-        .director-image {
-            max-width: 200px; /* Postavite maksimalnu širinu slike */
-            max-height: 300px; /* Postavite maksimalnu visinu slike */
-            width: auto; /* Automatski prilagodi širinu */
-            height: auto; /* Automatski prilagodi visinu */
+        .sticky-top {
+            position: sticky;
+            top: 0;
+            z-index: 1020;
         }
+        .director-image {
+            max-width: 200px;
+            max-height: 300px;
+            width: auto;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 0.25rem;
+        }
+        .director-details {
+            transition: transform .2s;
+            margin-bottom: 20px;
+        }
+        .director-details:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-button {
+            position: absolute;
+            right: 0;
+            top: 0;
+            margin: 20px;
+        }
+
     </style>
 </head>
 <body>
-<div class="container mt-4">
-    <h1>Detalji Redatelja</h1>
-    <div class="card">
+<div class="container mt-5 sticky-top bg-white">
+    <h1 class="mb-4">Detalji Redatelja</h1>
+    <a href="/profile" class="btn btn-secondary profile-button">Moj profil</a>
+</div>
+
+<div class="container mt-3">
+    <div class="card director-details">
+        <img th:src="${redatelj.slikaUrl}" alt="Slika Redatelja" class="director-image">
         <div class="card-body">
-            <h2 class="card-title" th:text="${redatelj.ime}">Ime Redatelja</h2>
-            <p><strong>Biografija:</strong> <span th:text="${redatelj.biografija}"></span></p>
-            <p><strong>Slika Redatelja:</strong></p>
-            <img th:src="${redatelj.slikaUrl}" alt="Slika Redatelja" class="img-fluid director-image" th:if="${redatelj.slikaUrl}">
-            <p><strong>Datum Rođenja:</strong> <span th:text="${#temporals.format(redatelj.datumRodjenja, 'dd.MM.yyyy')}"></span></p>
-            <p><strong>Mjesto Rođenja:</strong> <span th:text="${redatelj.mjestoRodjenja}"></span></p>
-            <h4>Filmovi:</h4>
+            <h5 class="card-title" th:text="${redatelj.ime}">Ime Redatelja</h5>
+            <p class="card-text"><strong>Biografija:</strong> <span th:text="${redatelj.biografija}"></span></p>
+            <p class="card-text"><strong>Datum Rođenja:</strong> <span th:text="${#temporals.format(redatelj.datumRodjenja, 'dd.MM.yyyy')}"></span></p>
+            <p class="card-text"><strong>Mjesto Rođenja:</strong> <span th:text="${redatelj.mjestoRodjenja}"></span></p>
+            <h5>Filmovi:</h5>
             <ul>
                 <li th:each="film : ${redatelj.filmovi}">
                     <a th:href="@{/filmovi/film-details/{id}(id=${film.id})}" th:text="${film.naziv}"></a>
                 </li>
             </ul>
-
         </div>
     </div>
 </div>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

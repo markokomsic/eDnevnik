@@ -11,11 +11,12 @@ public class Film {
     private Long id;
 
     private String naziv;
+    @Column(length = 10000)
     private String opis;
     private int godinaIzdavanja;
-    private String slikaUrl; // URL slike filma
-    private int trajanje; // Trajanje filma u minutama
-    private String trailerUrl; // URL trailera filma
+    private String slikaUrl;
+    private int trajanje;
+    private String trailerUrl;
 
     @ManyToMany(cascade = {
             CascadeType.MERGE,
@@ -53,10 +54,10 @@ public class Film {
     )
     private Set < Redatelj > redatelji = new HashSet < > ();
 
-    // Defaultni konstruktor
+
     public Film() {}
 
-    // Parametrizirani konstruktor
+
     public Film(String naziv, String opis, int godinaIzdavanja, String slikaUrl, int trajanje, String trailerUrl) {
         this.naziv = naziv;
         this.opis = opis;
@@ -66,7 +67,7 @@ public class Film {
         this.trailerUrl = trailerUrl;
     }
 
-    // Getteri i setteri za sve atribute, uključujući nove
+
     public Long getId() {
         return id;
     }
@@ -134,7 +135,7 @@ public class Film {
         this.redatelji = redatelji;
     }
 
-    // Metode za upravljanje vezama
+
     public void addZanr(Zanr zanr) {
         zanrovi.add(zanr);
         zanr.getFilmovi().add(this);
@@ -167,4 +168,22 @@ public class Film {
         redatelji.remove(redatelj);
         redatelj.getFilmovi().remove(this);
     }
+    public double getProsjecnaOcjena() {
+        if (recenzije.isEmpty()) {
+            return 0;
+        }
+        double sumaOcjena = 0;
+        for (Recenzija recenzija : recenzije) {
+            sumaOcjena += recenzija.getOcjena();
+        }
+        double prosjek = sumaOcjena / recenzije.size();
+        // Zaokruživanje na jednu decimalu
+        prosjek = Math.round(prosjek * 10) / 10.0;
+        return prosjek;
+    }
+
+    public int getZaokruzenaProsjecnaOcjena() {
+        return (int) Math.round(getProsjecnaOcjena());
+    }
+
 }

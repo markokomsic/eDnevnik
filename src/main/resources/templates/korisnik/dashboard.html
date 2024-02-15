@@ -4,11 +4,35 @@
     <meta charset="UTF-8">
     <title>Korisnikova Stranica</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+
+        .card {
+            transition: transform .2s;
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+         .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+         .btn-danger {
+            background-color: #db7d12;
+            color: white;
+            border: none;
+        }
+         .card-body {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-4">
     <h1>Dobrodošli, <span th:text="${korisnik.ime}"></span>!</h1>
-    <a href="/filmovi/home" class="btn btn-primary">Početna stranica</a> <!-- Gumb za povratak na početnu stranicu -->
+    <a href="/filmovi/home" class="btn btn-primary">Početna stranica</a>
     <form th:action="@{/logout}" method="post">
         <button type="submit" class="btn btn-danger">Odjavi se</button>
     </form>
@@ -27,7 +51,6 @@
             </ul>
         </div>
     </div>
-    <!-- Ostale funkcionalnosti -->
 </div>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>

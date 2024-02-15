@@ -1,23 +1,78 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" >
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Detalji Filma</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .img-fluid {
-            max-width: 200px;
-            max-height: 300px;
-            width: auto;
-            height: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"><style>
+    .sticky-top {
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        background-color: #f3f3f3;
+        border-bottom: 2px solid #ccc;
+    }
+    .img-fluid {
+        max-width: 200px;
+        max-height: 300px;
+        width: auto;
+        height: auto;
+        display: block;
+        margin: 20px auto;
+        border-radius: 0.25rem;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .film-details {
+        transition: transform .2s;
+        margin-bottom: 20px;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .profile-button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        margin: 20px;
+        background-color: #db7d12;
+        color: white;
+        border: none;
+    }
+    .card-subtitle, .card-text, ul {
+        margin-bottom: 10px;
+    }
+    .recenzija-section, .dodaj-recenziju-section {
+        margin-top: 20px;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 5px;
+    }
+    .recenzija-section hr {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .like-dislike-btns {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+    .btn-like, .btn-dislike, .btn-obrisi-recenziju {
+        margin-right: 5px;
+        border: none;
+        background-color: #db7d12;
+        color: white;
+    }
+</style>
+
 </head>
 <body>
-<div class="container mt-4">
-    <h1>Detalji Filma</h1>
-    <a href="/filmovi/home" class="btn btn-secondary mb-4">Povratak na početnu</a>
-    <div class="card">
+<div class="container mt-5 sticky-top bg-white">
+    <h1 class="mb-4">Detalji Filma</h1>
+    <a href="/filmovi/home" class="btn btn-secondary profile-button">Povratak na početnu</a>
+</div>
+
+<div class="container mt-3">
+    <div class="card film-details">
         <div class="card-body">
             <h2 class="card-title" th:text="${film.naziv}">Naziv Filma</h2>
             <h5 class="card-subtitle mb-2 text-muted" th:text="'Godina izdavanja: ' + ${film.godinaIzdavanja}">Godina Izdavanja</h5>
@@ -49,11 +104,9 @@
                     <a th:href="${film.trailerUrl}" target="_blank" th:if="${film.trailerUrl}">Pogledaj Trailer</a>
                 </div>
             </div>
-            <a th:href="@{/filmovi/home}" class="card-link">Povratak na listu filmova</a>
         </div>
     </div>
-
-    <div class="mt-4">
+    <div class="recenzija-section">
         <h3>Recenzije</h3>
         <div th:if="${not #lists.isEmpty(recenzije)}">
             <div th:each="recenzija : ${recenzije}">
@@ -62,25 +115,22 @@
                     <p><strong>Datum objave:</strong> <span th:text="${recenzija.datumObjave}"></span></p>
                     <p><strong>Ocjena:</strong> <span th:text="${recenzija.ocjena}"></span> / 10</p>
                     <p><strong>Tekst recenzije:</strong> <span th:text="${recenzija.tekst}"></span></p>
-                    <p><strong>Likeovi:</strong> <span th:text="${recenzija.brojLikeova}"></span>
-                    <form th:action="@{|/recenzija/${recenzija.id}/like|}" method="post">
-                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-                        <input type="submit" value="Like">
-                    </form>
-                    </p>
-                    <p><strong>Dislikeovi:</strong> <span th:text="${recenzija.brojDislikeova}"></span>
-                    <form th:action="@{|/recenzija/${recenzija.id}/dislike|}" method="post">
-                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-                        <input type="submit" value="Dislike">
-                    </form>
-                    </p>
-                    <!-- Forma za brisanje recenzije (dostupno samo ADMIN) -->
-                    <form th:action="@{/recenzija/delete/{id}(id=${recenzija.id})}" method="post">
-                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-                        <button type="submit" class="btn btn-danger">Obriši recenziju</button>
-                    </form>
-
-                    <!-- Kraj forme za brisanje recenzije -->
+                    <div class="like-dislike-btns">
+                        <form th:action="@{|/recenzija/${recenzija.id}/like|}" method="post" class="btn-like">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                            <input type="submit" value="Like" class="btn btn-sm btn-success">
+                        </form>
+                        <span th:text="${recenzija.brojLikeova}"></span>
+                        <form th:action="@{|/recenzija/${recenzija.id}/dislike|}" method="post" class="btn-dislike">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                            <input type="submit" value="Dislike" class="btn btn-sm btn-danger">
+                        </form>
+                        <span th:text="${recenzija.brojDislikeova}"></span>
+                        <form th:action="@{/recenzija/delete/{id}(id=${recenzija.id})}" method="post" class="btn-obrisi-recenziju">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                            <button type="submit" class="btn btn-sm btn-warning">Obriši recenziju</button>
+                        </form>
+                    </div>
                 </div>
                 <hr/>
             </div>
@@ -90,14 +140,10 @@
         </div>
     </div>
 
-
-
-    <!-- Forma za dodavanje nove recenzije -->
-    <div class="mt-4">
+    <div class="dodaj-recenziju-section">
         <h3>Dodaj novu recenziju</h3>
         <form th:action="@{/filmovi/addRecenzija}" method="post">
-
-        <input type="hidden" name="filmId" th:value="${film.id}"/>
+            <input type="hidden" name="filmId" th:value="${film.id}"/>
             <div class="form-group">
                 <label for="tekstRecenzije">Vaša recenzija</label>
                 <textarea id="tekstRecenzije" name="tekst" class="form-control" placeholder="Unesite recenziju ovdje..." required></textarea>
@@ -109,21 +155,10 @@
             <button type="submit" class="btn btn-primary">Pošalji recenziju</button>
         </form>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </div>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

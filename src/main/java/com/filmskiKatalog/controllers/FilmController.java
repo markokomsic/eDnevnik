@@ -32,7 +32,7 @@ public class FilmController {
     @Autowired
     private RecenzijaService recenzijaService;
     @Autowired
-    private UserRepository userRepository; // Ovo je ispravno ime vašeg repozitorija
+    private UserRepository userRepository;
 
 
 
@@ -81,13 +81,14 @@ public class FilmController {
     public String showEditFilmForm(@PathVariable Long id, Model model) {
         Optional<Film> filmOptional = filmService.findFilmById(id);
         if (filmOptional.isPresent()) {
+            Film film = filmOptional.get();
             List<Zanr> zanrovi = zanrService.findAllZanrovi();
             List<Glumac> glumci = glumacService.findAllGlumci();
             List<Redatelj> redatelji = redateljService.findAllRedatelji();
             model.addAttribute("zanrovi", zanrovi);
             model.addAttribute("glumci", glumci);
             model.addAttribute("redatelji", redatelji);
-            model.addAttribute("film", filmOptional.get());
+            model.addAttribute("film", film); // Ovdje se šalje film sa njegovim trenutnim žanrovima
             return "filmovi/edit-film";
         } else {
             model.addAttribute("errorMessage", "Film nije pronađen!");
@@ -98,22 +99,44 @@ public class FilmController {
 
     @PostMapping("/edit-film/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String updateFilm(@PathVariable Long id, @ModelAttribute("film") Film film, RedirectAttributes redirectAttributes,
-                             @RequestParam("selectedZanrovi") Set<Long> selectedZanrovi,
-                             @RequestParam("selectedGlumci") Set<Long> selectedGlumci,
-                             @RequestParam("selectedRedatelji") Set<Long> selectedRedatelji) {
-        Set<Zanr> zanrovi = new HashSet<>(zanrService.findAllById(selectedZanrovi));
-        Set<Glumac> glumci = new HashSet<>(glumacService.findAllById(selectedGlumci));
-        Set<Redatelj> redatelji = new HashSet<>(redateljService.findAllById(selectedRedatelji));
+    public String updateFilm(@PathVariable Long id, @ModelAttribute("film") Film updatedFilm, RedirectAttributes redirectAttributes,
+                             @RequestParam(value = "selectedZanrovi", required = false) Optional<Set<Long>> selectedZanrovi,
+                             @RequestParam(value = "selectedGlumci", required = false) Optional<Set<Long>> selectedGlumci,
+                             @RequestParam(value = "selectedRedatelji", required = false) Optional<Set<Long>> selectedRedatelji) {
+        Film existingFilm = filmService.findFilmById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Neispravan ID filma: " + id));
 
-        film.setZanrovi(zanrovi);
-        film.setGlumci(glumci);
-        film.setRedatelji(redatelji);
 
-        filmService.saveFilm(film);
+        if (selectedZanrovi.isPresent() && !selectedZanrovi.get().isEmpty()) {
+            Set<Zanr> zanrovi = new HashSet<>(zanrService.findAllById(selectedZanrovi.get()));
+            updatedFilm.setZanrovi(zanrovi);
+        } else {
+            updatedFilm.setZanrovi(existingFilm.getZanrovi());
+        }
+
+
+        if (selectedGlumci.isPresent() && !selectedGlumci.get().isEmpty()) {
+            Set<Glumac> glumci = new HashSet<>(glumacService.findAllById(selectedGlumci.get()));
+            updatedFilm.setGlumci(glumci);
+        } else {
+            updatedFilm.setGlumci(existingFilm.getGlumci());
+        }
+
+
+        if (selectedRedatelji.isPresent() && !selectedRedatelji.get().isEmpty()) {
+            Set<Redatelj> redatelji = new HashSet<>(redateljService.findAllById(selectedRedatelji.get()));
+            updatedFilm.setRedatelji(redatelji);
+        } else {
+            updatedFilm.setRedatelji(existingFilm.getRedatelji());
+        }
+
+        updatedFilm.setId(id);
+
+        filmService.saveFilm(updatedFilm);
         redirectAttributes.addFlashAttribute("successMessage", "Film je uspješno ažuriran!");
         return "redirect:/filmovi/film-list";
     }
+
 
     @GetMapping("/delete-film/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -164,7 +187,7 @@ public class FilmController {
     public String home(Model model) {
         List<Film> filmovi = filmService.findAllFilms();
         model.addAttribute("filmovi", filmovi);
-        return "filmovi/home"; // Pobrinite se da je ovo ispravna putanja do vašeg template-a
+        return "filmovi/home";
     }
 
     @PostMapping("/recenzija/{recenzijaId}/like")
@@ -184,6 +207,18 @@ public class FilmController {
         recenzijaService.saveRecenzija(recenzija);
         return "redirect:/film-details/" + recenzija.getFilm().getId();
     }
+    @GetMapping("/search")
+    public String searchFilms(@RequestParam("query") String query, Model model) {
+        List<Film> searchResults = filmService.searchByQuery(query);
+        model.addAttribute("filmovi", searchResults);
+        return "filmovi/home";
+    }
 
+    @GetMapping("/sortiraniPoOcjeni")
+    public String getFilmsSortedByOcjena(Model model) {
+        List<Film> sortedFilms = filmService.findAllSortedByOcjena();
+        model.addAttribute("filmovi", sortedFilms);
+        return "filmovi/home";
+    }
 
 }

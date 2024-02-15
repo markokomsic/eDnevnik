@@ -3,38 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <title>Detalji Glumca</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        /* Stil za ograničavanje veličine slike */
+        .sticky-top {
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+        }
         .actor-image {
-            max-width: 200px; /* Postavite maksimalnu širinu slike */
-            max-height: 300px; /* Postavite maksimalnu visinu slike */
-            width: auto; /* Automatski prilagodi širinu */
-            height: auto; /* Automatski prilagodi visinu */
+            max-width: 200px;
+            max-height: 300px;
+            width: auto;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 0.25rem;
+        }
+        .actor-details {
+            transition: transform .2s;
+            margin-bottom: 20px;
+        }
+        .actor-details:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-button {
+            position: absolute;
+            right: 0;
+            top: 0;
+            margin: 20px;
         }
     </style>
 </head>
 <body>
-<div class="container mt-4">
-    <h1>Detalji Glumca</h1>
-    <div class="card">
+<div class="container mt-5 sticky-top bg-white">
+    <h1 class="mb-4">Detalji Glumca</h1>
+
+    <a href="/profile" class="btn btn-secondary profile-button">Moj profil</a>
+</div>
+
+<div class="container mt-3">
+    <div class="card actor-details">
+        <img th:src="${glumac.slikaUrl}" alt="Slika Glumca" class="actor-image">
         <div class="card-body">
-            <h2 class="card-title" th:text="${glumac.ime}">Ime Glumca</h2>
-            <p><strong>Biografija:</strong> <span th:text="${glumac.biografija}"></span></p>
-            <p><strong>Slika Glumca:</strong></p>
-            <img th:src="${glumac.slikaUrl}" alt="Slika Glumca" class="actor-image" th:if="${glumac.slikaUrl}">
-            <p><strong>Datum Rodjenja:</strong> <span th:text="${#temporals.format(glumac.datumRodjenja, 'dd.MM.yyyy')}"></span></p>
-            <p><strong>Mjesto Rodjenja:</strong> <span th:text="${glumac.mjestoRodjenja}"></span></p>
-            <h4>Filmovi:</h4>
+            <h5 class="card-title" th:text="${glumac.ime}">Ime Glumca</h5>
+            <p class="card-text"><strong>Biografija:</strong> <span th:text="${glumac.biografija}"></span></p>
+            <p class="card-text"><strong>Datum Rodjenja:</strong> <span th:text="${#temporals.format(glumac.datumRodjenja, 'dd.MM.yyyy')}"></span></p>
+            <p class="card-text"><strong>Mjesto Rodjenja:</strong> <span th:text="${glumac.mjestoRodjenja}"></span></p>
+            <h5>Filmovi:</h5>
             <ul>
                 <li th:each="film : ${glumac.filmovi}">
                     <a th:href="@{/filmovi/film-details/{id}(id=${film.id})}" th:text="${film.naziv}"></a>
                 </li>
             </ul>
-
         </div>
     </div>
 </div>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

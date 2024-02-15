@@ -23,7 +23,7 @@ public class ZanrService {
     }
 
     public List<Zanr> findAllById(Set<Long> ids) {
-        return zanrRepository.findAllById(ids); // Ova metoda koristi JpaRepository metodu findAllById
+        return zanrRepository.findAllById(ids);
     }
 
     public Zanr saveZanr(Zanr zanr) {
@@ -34,5 +34,5 @@ public class ZanrService {
         zanrRepository.deleteById(id);
     }
 
-    // Dodajte dodatne metode prema potrebi, npr. pretraga filmova po zanru
+
 }

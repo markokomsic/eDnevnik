@@ -31,7 +31,7 @@ public class UserController {
         return "users/index";
     }
 
-    // U klasi UserController
+
 
     @GetMapping("/users/add")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -63,7 +63,7 @@ public class UserController {
         return "redirect:/users";
     }
 
-    // U klasi UserController
+
 
     @GetMapping("/users/edit/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -77,19 +77,19 @@ public class UserController {
     @PostMapping("/users/edit/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String updateUser(@PathVariable Long userId, @ModelAttribute User user, Model model) {
-        // Provjerite postoji li korisnik s tim ID-om
+
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Neispravan ID korisnika: " + userId));
         existingUser.setIme(user.getIme());
         existingUser.setPrezime(user.getPrezime());
         existingUser.setEmail(user.getEmail());
-        // Lozinka
+
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String lozinka = encoder.encode(user.getLozinka());
         existingUser.setLozinka(lozinka);
         existingUser.setPotvrdaLozinke(lozinka);
         existingUser.setRoles(user.getRoles());
-        // Postavite ostala polja po potrebi
+
         userRepository.save(existingUser);
         return "redirect:/users";
     }

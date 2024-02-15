@@ -9,10 +9,10 @@ public class Recenzija {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 10000) // Pretpostavka za duljinu teksta recenzije
+    @Column(length = 10000)
     private String tekst;
 
-    private int ocjena; // Pretpostavka da je ocjena numerička vrijednost
+    private int ocjena;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "film_id")
@@ -20,8 +20,7 @@ public class Recenzija {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user; // Pretpostavka da postoji entitet User
-
+    private User user;
     private LocalDate datumObjave;
 
     private int brojLikeova;
@@ -44,7 +43,7 @@ public class Recenzija {
         this.brojDislikeova = 0;
     }
 
-    // Getteri i setteri
+
     public Long getId() {
         return id;
     }
