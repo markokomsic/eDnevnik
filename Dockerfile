@@ -1,9 +1,6 @@
 # Faza izgradnje
-FROM openjdk:17-oracle AS build
+FROM maven:3.8.4-openjdk-17 AS build
 # Kopiranje vašeg izvornog koda i pom.xml u kontejner
-# Instalirajte Maven
-RUN apt-get update && \
-    apt-get install -y maven
 COPY src /home/app/src
 COPY pom.xml /home/app
 # Izgradnja aplikacije bez pokretanja testova
