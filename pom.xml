@@ -9,11 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
 
     </parent>
-    <groupId>ba.sum.fsre</groupId>
+    <groupId>com.filmskiKatalog</groupId>
     <artifactId>filmskiKatalog</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>eDnevnik</name>
-    <description>eDnevnik</description>
+    <name>filmskiKatalog</name>
+    <description>filmskiKatalog</description>
     <properties>
         <java.version>17</java.version>
     </properties>

@@ -2,8 +2,8 @@ version: "3.7"
 services:
   ednevnik:
     build: .
-    container_name: ednevnik
-    image: ednevnik:latest
+    container_name: filmskiKatalogApp
+    image: filmskikatalogapp:latest
     environment:
       - MYSQL_HOST=mysql
     ports:
