@@ -1,5 +1,5 @@
 # Faza izgradnje
-FROM maven:3.8.7-openjdk-18 AS build
+FROM maven:3.8.7-openjdk-17 AS build
 # Kopiranje vašeg izvornog koda i pom.xml u kontejner
 COPY src /home/app/src
 COPY pom.xml /home/app
